@@ -25,13 +25,15 @@ def process_amass():
         r"""
         Synthesize accelerations from vertex positions.
         """
+        # ElaheVida: velocity formula is different from Wikipedia, uses three datapoints
         acc = torch.stack([(v[i] + v[i + 2] - 2 * v[i + 1]) * 3600 for i in range(0, v.shape[0] - 2)])
         acc = torch.cat((torch.zeros_like(acc[:1]), acc, torch.zeros_like(acc[:1])))
         return acc
-
+    # ElaheVida:  are these numbers random or do they mean something?
     # left wrist, right wrist, left thigh, right thigh, head, pelvis
     vi_mask = torch.tensor([1961, 5424, 876, 4362, 411, 3021])
     ji_mask = torch.tensor([18, 19, 1, 2, 15, 0])
+    # ElaheVida: this is the bottleneck
     body_model = ParametricModel(config.og_smpl_model_path)
 
     try:
@@ -70,7 +72,7 @@ def process_amass():
         # include the left and right index fingers in the pose
         pose[:, 23] = pose[:, 37]     # right hand 
         pose = pose[:, :24].clone()   # only use body + right and left fingers
-
+        # ElaheVida: does it loose any data?
         # align AMASS global frame with DIP
         amass_rot = torch.tensor([[[1, 0, 0], [0, 0, 1], [0, -1, 0.]]])
         tran = amass_rot.matmul(tran.unsqueeze(-1)).view_as(tran)
