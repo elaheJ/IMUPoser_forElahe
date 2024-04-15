@@ -125,7 +125,7 @@ amass_combos = {
     'h': [4]
  }
 
-
+# ElaheVida we don't understand this
 pred_joints_set = {
     "legs": [0, 1, 2, 4, 5, 7, 8, 10, 11], 
     "upper_body": [0, 3, 6, 9, 13, 14, 16, 17, 18, 19, 20, 21], 
